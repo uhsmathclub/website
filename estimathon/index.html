@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Estimathon</title>
+<link rel="icon" href="../assets/images/math-club.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<style>
+  main { max-width: 46rem; margin: 0 auto; width: 100%; }
+  section { display: grid; gap: 1.15rem; align-content: start; width: 100%; }
+  section.mid { align-content: center; justify-items: center; text-align: center; flex: 1; gap: 1.2rem; }
+
+  .colors { display: flex; gap: 2rem; }
+  input.needs { border-style: dashed; border-color: var(--accent); }
+  #helpb { width: 2.2rem; height: 2.2rem; font-size: 1rem; font-weight: 640; }
+  .archlink { margin-top: 1.4rem; text-align: center; font-size: .9rem; }
+  .archlink a { color: var(--muted); text-underline-offset: 3px; }
+  .archlink a:hover { color: var(--accent); }
+  .warn {
+    margin-top: 1.2rem; padding: .7rem 1rem; border-radius: 14px;
+    background: color-mix(in srgb, var(--wrong) 14%, transparent);
+    color: var(--wrong); text-align: center; font-weight: 560;
+  }
+  .honor {
+    margin-top: 1.6rem; padding-top: 1rem; border-top: 1.5px solid var(--line);
+    color: var(--muted); font-size: .9rem; text-align: center;
+  }
+
+  .modal {
+    position: fixed; inset: 0; z-index: 90; padding: 1.2rem;
+    background: color-mix(in srgb, var(--ink) 42%, transparent);
+    display: grid; place-items: center;
+  }
+  .sheet {
+    max-width: 34rem; width: 100%; max-height: 82vh; overflow: auto;
+    display: grid; gap: 1.1rem;
+  }
+  .instr { font-size: 1.02rem; line-height: 1.45; }
+  .instr ul { margin: 0; padding-left: 1.2em; display: grid; gap: .5rem; }
+  .instr ul ul { margin-top: .5rem; }
+  .instr li::marker { color: var(--muted); }
+  .colors .field { justify-items: center; }
+
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .pill { border: 1.5px solid var(--line); border-radius: 999px; padding: .2em .9em; font-size: .85rem; color: var(--muted); flex: none; }
+
+  .q { font-size: 1.15rem; line-height: 1.35; }
+
+  .bounds { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .bounds input { font-size: 1.15rem; text-align: right; }
+  .prev { font-size: .85rem; color: var(--muted); min-height: 1.35em; text-align: right; }
+  .prev sup { font-size: .68em; }
+
+  .acts { display: flex; gap: .6rem; align-items: stretch; }
+  .acts .grow { flex: 1; }
+
+  @keyframes nudge { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-7px)} 75%{transform:translateX(7px)} }
+  .nudge { animation: nudge .3s ease; }
+
+  @media (max-width: 560px) { .bounds { grid-template-columns: 1fr; gap: .7rem; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="me" id="me" hidden><span class="sw" id="msw"></span><b id="mname"></b><span class="tag" id="mroom"></span></span>
+  <span class="me" id="brand"><b>Estimathon</b></span>
+  <span class="me">
+    <button class="ghost icon tiny" id="helpb" hidden aria-label="Help">?</button>
+    <span class="pill" id="rankp" hidden></span>
+    <span class="pill" id="scorep" hidden></span>
+    <span id="themehost"></span>
+  </span>
+</div>
+
+<main>
+
+  <section id="join" hidden>
+    <h1>Estimathon</h1>
+    <label class="field"><span class="tag">Name</span>
+      <input id="u" type="text" maxlength="10" pattern="[a-z]{1,10}" autocapitalize="off"
+             autocomplete="off" spellcheck="false" placeholder="lowercase">
+    </label>
+    <div class="field"><span class="tag">Room</span><div class="seg" id="rooms"></div></div>
+    <label class="field"><span class="tag">Code</span>
+      <input id="code" class="mono" type="text" autocapitalize="off" autocomplete="off" spellcheck="false">
+    </label>
+    <div class="colors">
+      <label class="field"><span class="tag">Your colour</span><input type="color" id="fav" class="needs" value="#9aa3ad"></label>
+      <label class="field"><span class="tag">Guessed average</span><input type="color" id="guess" value="#808080"></label>
+    </div>
+    <button id="joinb">Join</button>
+    <p class="err" id="joine"></p>
+  </section>
+
+  <section id="lobby" class="mid" hidden>
+    <button class="big" id="startb">Start</button>
+    <p class="muted" id="lmsg"></p>
+  </section>
+
+  <section id="game" hidden>
+    <div class="top">
+      <div class="dots" id="dots"></div>
+      <span class="pill" id="res"></span>
+    </div>
+    <div class="card" style="display:grid;gap:.45rem">
+      <span class="tag" id="qnum"></span>
+      <p class="q" id="qtext"></p>
+    </div>
+    <div class="bounds">
+      <div class="field"><span class="tag" id="lolbl">Low</span>
+        <div class="ibox"><span class="brk">[</span><input id="lo" type="text" inputmode="decimal"><span class="brk">,</span></div>
+        <span class="prev" id="lop"></span></div>
+      <div class="field"><span class="tag" id="hilbl">High</span>
+        <div class="ibox"><input id="hi" type="text" inputmode="decimal"><span class="brk">]</span></div>
+        <span class="prev" id="hip"></span></div>
+    </div>
+    <div class="acts">
+      <button class="ghost icon" id="prevb" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button class="grow" id="sub">Submit</button>
+      <button class="ghost icon" id="nextb" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="hist" id="hist" hidden></div>
+    <p class="err" id="gerr"></p>
+  </section>
+
+  <section id="done" class="mid" hidden>
+    <h1 id="dtitle">Game over</h1>
+    <p class="tag" id="dsub"></p>
+  </section>
+
+  <p class="archlink" id="archlink"><a href="archive.html">Past results</a></p>
+
+  <p class="warn" id="warn" hidden>Stay on this page.</p>
+
+  <p class="honor" id="honor" hidden>No external assistance, which includes calculators. You may only use Google Translate.</p>
+
+  <div class="qpanel" id="panel" hidden></div>
+
+</main>
+
+<div class="modal" id="help" hidden>
+  <div class="sheet card">
+    <div class="instr" id="helplist"></div>
+    <button class="ghost" id="helpx">Close</button>
+  </div>
+</div>
+
+<footer id="foot" hidden>
+  <span class="sw" id="fsw"></span>
+  <b id="fname"></b>
+  <span class="tag">Winner</span>
+</footer>
+
+<script type="module" src="index.js"></script>
+</body>
+</html>

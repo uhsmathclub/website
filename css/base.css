@@ -1,0 +1,228 @@
+/* ============================================================
+   base.css — Structural primitives
+   The layout scaffolding for the site: page wrappers,
+   sections, the gallery grid and the Markdown container.
+   Everything is self-contained, with no external CDN.
+   Visual theme styling (colors, fonts, header, banner)
+   lives in theme.css.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+img { max-width: 100%; height: auto; }
+
+/* --- Page wrapper & sections --- */
+.wrapper { position: relative; min-height: 100%; }
+
+.wsite-section-wrap { position: relative; }
+
+.wsite-section {
+  position: relative;
+  width: 100%;
+}
+
+.wsite-section-content { position: relative; }
+
+.wsite-section-elements { position: relative; }
+
+.wsite-elements { position: relative; }
+
+/* Body sections get comfortable vertical rhythm */
+.main-wrap .wsite-body-section { padding: 40px 0; }
+
+/* --- Content title --- */
+.wsite-content-title { margin: 0 0 20px; }
+
+/* --- Spacer block (height is set inline on each element) --- */
+.wsite-spacer { display: block; width: 100%; }
+
+/* --- Paragraph block --- */
+div.paragraph { margin: 0 0 10px; }
+
+/* --- Multi-column layout --- */
+.wsite-multicol-table-wrap { display: block; }
+.wsite-multicol-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.wsite-multicol-col {
+  vertical-align: top;
+  box-sizing: border-box;
+}
+
+/* --- Images --- */
+.wsite-image { display: block; }
+.wsite-image img { display: block; }
+.wsite-image-border-none img { border: none !important; padding: 0 !important; }
+.wsite-caption { display: block; }
+
+/* --- Buttons (structure; colors come from theme.css) --- */
+.wsite-button { cursor: pointer; text-decoration: none; }
+.wsite-button-inner { display: inline-block; }
+
+/* --- Social icons (glyphs via inline SVG mask fallback) --- */
+.wsite-social { display: inline-block; }
+.wsite-social-item {
+  display: inline-block;
+  text-decoration: none;
+  position: relative;
+}
+/* Simple readable labels for the two social links used on the site,
+   so the icons stay meaningful without an icon font. */
+.wsite-social-item-inner { display: inline-block; }
+
+/* --- Forms --- */
+.wsite-form-field { display: block; margin-bottom: 15px; }
+
+/* --- Embedded content (iframes from Discord, Tally, Google) --- */
+iframe { border: 0; max-width: 100%; }
+
+/* --- Responsive container handled in theme.css media query --- */
+
+/* --- Markdown-rendered content container --- */
+.markdown-body { color: #444; }
+.markdown-body h1 {
+  font-family: 'Raleway', sans-serif;
+  color: #333;
+  font-size: 34px;
+  font-weight: 600;
+  margin: 0 0 24px;
+  line-height: 1.2;
+}
+.markdown-body h2 {
+  font-family: 'Raleway', sans-serif;
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 32px 0 12px;
+}
+.markdown-body h3 {
+  font-family: 'Raleway', sans-serif;
+  color: #444;
+  font-size: 19px;
+  font-weight: 600;
+  margin: 24px 0 8px;
+}
+.markdown-body p { margin: 0 0 16px; line-height: 1.7; }
+.markdown-body ul { margin: 0 0 16px; padding-left: 22px; }
+.markdown-body li { margin: 6px 0; line-height: 1.6; }
+.markdown-body a { word-break: break-word; }
+.markdown-body img {
+  display: block;
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  padding: 3px;
+  border-radius: 2px;
+}
+.markdown-body table {
+  border-collapse: collapse;
+  margin: 0 0 20px;
+  width: 100%;
+  max-width: 640px;
+}
+.markdown-body th, .markdown-body td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.markdown-body th { background: #f3eefe; font-weight: 600; }
+.markdown-body iframe { margin: 10px 0 24px; }
+
+/* Loading + error states for Markdown fetch */
+.content-status {
+  color: #888;
+  font-style: italic;
+  padding: 20px 0;
+}
+.content-status.error { color: #b00020; font-style: normal; }
+
+/* ============================================================
+   Gallery grid + lightbox
+   ============================================================ */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 10px 0 30px;
+}
+.gallery-item {
+  margin: 0;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 3px;
+  overflow: hidden;
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+.gallery-item:hover,
+.gallery-item:focus {
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.25);
+  transform: translateY(-2px);
+  outline: none;
+}
+.gallery-item:focus-visible { outline: 2px solid #8B5CF6; outline-offset: 2px; }
+.gallery-item img {
+  display: block;
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+.gallery-item figcaption {
+  padding: 8px 10px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #555;
+}
+
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.9);
+  align-items: center;
+  justify-content: center;
+}
+.lightbox.open { display: flex; }
+.lb-figure {
+  margin: 0;
+  max-width: 90vw;
+  max-height: 90vh;
+  text-align: center;
+}
+.lb-img {
+  max-width: 90vw;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 2px;
+}
+.lb-caption {
+  color: #fff;
+  margin-top: 12px;
+  font-size: 15px;
+  padding: 0 20px;
+}
+.lb-close, .lb-prev, .lb-next {
+  position: absolute;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 40px;
+  line-height: 1;
+  padding: 10px 18px;
+  opacity: 0.8;
+  transition: opacity 150ms ease, color 150ms ease;
+}
+.lb-close:hover, .lb-prev:hover, .lb-next:hover { opacity: 1; color: #8B5CF6; }
+.lb-close { top: 10px; right: 14px; font-size: 44px; }
+.lb-prev { left: 8px; top: 50%; transform: translateY(-50%); }
+.lb-next { right: 8px; top: 50%; transform: translateY(-50%); }
+
+@media (max-width: 600px) {
+  .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+  .gallery-item img { height: 120px; }
+  .lb-prev, .lb-next { font-size: 30px; padding: 8px 10px; }
+}

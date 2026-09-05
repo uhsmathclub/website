@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Estimathon · host</title>
+<link rel="icon" href="../assets/images/math-club.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<style>
+  main { max-width: 88rem; margin: 0 auto; width: 100%; }
+  section { width: 100%; }
+  #gate { max-width: 24rem; margin: auto; display: grid; gap: 1rem; }
+
+  .bar { display: flex; align-items: baseline; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  #pre, #live { display: flex; flex-direction: column; gap: 1rem; flex: 1; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: .8rem; }
+  .grid .card { display: grid; gap: .2rem; padding: .9rem 1.1rem; }
+  .roomA { color: var(--a); } .roomB { color: var(--b); }
+
+  .tug { margin: 1.3rem 0 1.7rem; }
+  .tugrow { display: flex; justify-content: space-between; font-weight: 580; margin-bottom: .45rem; }
+  .track { position: relative; height: 26px; border-radius: 999px; background: var(--card); box-shadow: var(--shadow); overflow: hidden; }
+  .track i { position: absolute; top: 0; bottom: 0; }
+  .track i { transition: width .5s ease, left .5s ease; }
+  .track i.fa { background: var(--a); left: 0; width: 50%; }
+  .track i.fb { background: var(--b); left: 50%; right: 0; }
+
+  .lb { columns: 4 16rem; column-gap: 1.7rem; }
+  .qwrap { display: grid; gap: .8rem; margin-top: 1.4rem; }
+  .qshow { display: grid; gap: .35rem; }
+  .qhead { font-size: 1.15rem; }
+  .qchips { display: flex; flex-wrap: wrap; gap: .9rem; }
+  .qrow { display: grid; grid-template-columns: 1.6rem auto 8rem 1fr; align-items: center; gap: .55rem; }
+  .qrow .rk { color: var(--muted); font-size: .85rem; text-align: right; }
+  .qrow .nm { font-weight: 540; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .qrow.a .nm { box-shadow: inset 0 -2px 0 var(--a); }
+  .qrow.b .nm { box-shadow: inset 0 -2px 0 var(--b); }
+  .qrow .iv { color: var(--muted); }
+
+  .strip {
+    display: flex; flex-wrap: wrap; gap: 1.4rem; align-items: baseline;
+    margin: -.6rem 0 1.2rem; font-size: 1.15rem;
+  }
+  .blind { display: grid; place-items: center; padding: 3.5rem 0; }
+  .blind .display { color: var(--muted); }
+  .row { break-inside: avoid; display: grid; grid-template-columns: 1.8rem auto 1fr auto; align-items: center; gap: .55rem; padding: .28rem 0; }
+  .row .rk { color: var(--muted); font-size: .85rem; text-align: right; }
+  .row .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 540; }
+  .row .sc { font-weight: 640; letter-spacing: -.02em; }
+  .row.a .nm { box-shadow: inset 0 -2px 0 var(--a); }
+  .row.b .nm { box-shadow: inset 0 -2px 0 var(--b); }
+  .flag { color: var(--wrong); font-size: .85rem; }
+
+  .win { display: flex; align-items: center; gap: 1.1rem; margin-bottom: 1.4rem; }
+  .win .sw { width: 3.2rem; height: 3.2rem; }
+
+  .colors { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.6rem; margin-top: 1.6rem; }
+  .cgroup { display: grid; gap: .7rem; align-content: start; }
+  .cbig { width: 3.4rem; height: 3.4rem; border-radius: 50%; border: 3px solid var(--ink); }
+  .swrow { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .swrow .sw { width: 1.15rem; height: 1.15rem; border-width: 2px; border-color: var(--ink); }
+  .chips { display: grid; gap: .4rem; }
+  .chip { display: flex; align-items: center; gap: .5rem; }
+  .chip .sw { width: 1.4rem; height: 1.4rem; border-width: 2.5px; border-color: var(--ink); }
+  .chip .rm { font-size: .85rem; }
+  .chip .rm.a { color: var(--a); } .chip .rm.b { color: var(--b); }
+
+  .times { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: .9rem; align-items: end; }
+  @media (max-width: 640px) { .times { grid-template-columns: 1fr 1fr; } }
+  .acts { display: flex; gap: .6rem; flex-wrap: wrap; align-items: center; }
+
+  .instrwrap { display: flex; align-items: center; gap: 1.8rem; }
+  .instr { font-size: 1.35rem; line-height: 1.4; flex: 1; min-width: 0; }
+  .qr {
+    width: 17rem; height: 17rem; flex: none; border-radius: 14px;
+    background: #fff; padding: .55rem; box-sizing: border-box;
+  }
+  @media (max-width: 820px) {
+    .instrwrap { flex-direction: column-reverse; align-items: stretch; gap: 1.2rem; }
+    .qr { align-self: center; }
+  }
+  .instr ul { margin: 0; padding-left: 1.2em; display: grid; gap: .55rem; }
+  .instr ul ul { font-size: .82em; margin-top: .55rem; }
+  .instr li::marker { color: var(--muted); }
+  .instr code { font-size: .92em; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="me" id="who" hidden><b id="wroom"></b><span class="tag" id="wname"></span><span class="tag mono" id="wcode"></span></span>
+  <span class="me" id="brand"><b>Host</b></span>
+  <span class="me">
+    <span class="tag toast" id="toast"></span>
+    <button class="ghost tiny" id="pubb" hidden>Publish</button>
+    <button class="ghost tiny" id="endb" hidden>End early</button>
+    <button class="ghost tiny" id="resetb" hidden>Reset</button>
+    <button class="ghost tiny" id="wipeb" hidden>Wipe</button>
+    <span id="themehost"></span>
+  </span>
+</div>
+
+<main>
+
+  <section id="gate">
+    <h1>Host</h1>
+    <label class="field"><span class="tag">Email</span><input id="ge" type="text" autocomplete="username"></label>
+    <label class="field"><span class="tag">Key</span><input id="gp" type="password" autocomplete="current-password"></label>
+    <div class="field"><span class="tag">Room</span><div class="seg" id="sides"></div></div>
+    <button id="gb">Sign in</button>
+    <p class="err" id="gerr"></p>
+  </section>
+
+  <section id="pre" hidden>
+    <div class="grid">
+      <div class="card"><p class="tag">Code</p><p class="display mono" id="mycode"></p></div>
+      <div class="card"><p class="tag">Start</p><p class="display fixw" id="preclk">–:––</p></div>
+      <div class="card"><p class="tag">Window</p><p class="display" id="prewin"></p></div>
+      <div class="card"><p class="tag"><span class="roomA" id="lblA"></span> · <span class="roomB" id="lblB"></span></p><p class="display"><b class="roomA" id="cA">0</b> · <b class="roomB" id="cB">0</b></p></div>
+    </div>
+    <div class="card" style="margin-top:1rem;display:grid;gap:1rem">
+      <div class="times">
+        <label class="field"><span class="tag">Start</span><input id="t1" type="time"></label>
+        <label class="field"><span class="tag">End</span><input id="t2" type="time"></label>
+        <label class="field narrow"><span class="tag">Blind · min</span><input id="t3" type="number" min="0" max="20" step="1"></label>
+        <button class="ghost" id="savet">Save</button>
+      </div>
+      <div class="acts" id="acts" hidden>
+        <button class="ghost" id="forceb" hidden>Start now</button>
+        <span class="tag" id="ready"></span>
+      </div>
+      <p class="err" id="perr"></p>
+    </div>
+
+    <div class="card instrwrap">
+      <div class="instr" id="instr" hidden></div>
+      <img class="qr" src="../assets/images/estimathon-qr.png" alt="QR"
+           onerror="this.hidden=true">
+    </div>
+  </section>
+
+  <section id="live" hidden>
+    <div class="bar">
+      <span class="display fixw" id="clk">–:––</span>
+      <span class="display" id="window"></span>
+      <span class="display"><b class="roomA" id="nA">0</b> · <b class="roomB" id="nB">0</b></span>
+      <span class="tag"><span class="roomA" id="nlblA"></span> · <span class="roomB" id="nlblB"></span></span>
+      <span class="tag" id="nbadge"></span>
+      <span class="tag" id="phase"></span>
+    </div>
+
+    <div class="strip" id="strip" hidden>
+      <span class="mono" id="striplink"></span>
+      <span class="mono" id="stripcode"></span>
+      <span class="tag">No calculators.</span>
+    </div>
+
+    <div class="blind" id="blindmsg" hidden><p class="display">Hidden for suspense</p></div>
+
+    <div class="card win" id="winner" hidden>
+      <span class="sw" id="wsw"></span>
+      <div><h1 id="winname"></h1><p class="tag" id="winsub"></p></div>
+    </div>
+
+    <div class="tug" id="tug">
+      <div class="tugrow"><span class="roomA" id="tA"></span><span class="roomB" id="tB"></span></div>
+      <div class="track"><i class="fa" id="fa"></i><i class="fb" id="fb"></i></div>
+    </div>
+
+    <div class="lb" id="lb"></div>
+
+    <div class="qwrap" id="qwrap" hidden>
+      <p class="tag" id="stats"></p>
+      <div class="qpanel" id="panel"></div>
+      <div class="qshow" id="qshow"></div>
+    </div>
+
+    <div class="colors" id="colors" hidden>
+      <div class="cgroup"><p class="tag roomA" id="avgAl"></p><div class="cbig" id="bigA"></div><div class="swrow" id="dotsA"></div></div>
+      <div class="cgroup"><p class="tag roomB" id="avgBl"></p><div class="cbig" id="bigB"></div><div class="swrow" id="dotsB"></div></div>
+      <div class="cgroup"><p class="tag">Average</p><div class="cbig" id="bigAll"></div><div class="chips" id="close"></div></div>
+    </div>
+  </section>
+
+</main>
+<script type="module" src="host.js"></script>
+</body>
+</html>
