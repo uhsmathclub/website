@@ -76,7 +76,7 @@ div.paragraph { margin: 0 0 10px; }
 .wsite-form-field { display: block; margin-bottom: 15px; }
 
 /* --- Embedded content (iframes from Discord, Tally, Google) --- */
-iframe { border: 0; max-width: 100%; }
+iframe { border: 0; max-width: 100%; user-select: none; -webkit-user-select: none; }
 
 /* --- Responsive container handled in theme.css media query --- */
 
