@@ -445,6 +445,8 @@ Rules of thumb:
 ├── gallery.html            Photo gallery (photos from js/gallery-data.js)
 ├── lecture-archive.html    Lectures (text from content/lecture-archive.md)
 ├── contact.html            Contact (email link)
+├── 404.html                Shown for an address that doesn't exist;
+│                           displays "404" then sends you to the home page
 │
 ├── content/                ← EDIT THESE for page text
 │   ├── about.md

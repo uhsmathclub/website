@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="color-scheme" content="light dark">
+	<meta name="robots" content="noindex">
+	<link rel="icon" href="/assets/images/math-club.svg" type="image/svg+xml">
+	<script>(function(){try{var s=localStorage.getItem('uhs-theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var t=(s==='light'||s==='dark')?s:(d?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();</script>
+	<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;700&display=swap" rel="stylesheet">
+	<title>404 | UHS Math Club</title>
+	<noscript><meta http-equiv="refresh" content="3;url=/"></noscript>
+	<!-- This page is deliberately self-contained: a 404 can be served for ANY
+	     address (e.g. /a/b/c), so relative paths like "css/theme.css" would
+	     resolve against that address and 404 in turn. The few theme values it
+	     needs are copied from css/theme.css instead. -->
+	<style>
+		:root{
+			--accent:#8B5CF6;
+			--bg:#14101f;
+			--font-display:"Raleway","Inter",system-ui,sans-serif;
+		}
+		:root[data-theme="light"]{ --bg:#f6f4fb; }
+		@media (prefers-color-scheme: light){ :root:not([data-theme]){ --bg:#f6f4fb; } }
+
+		html,body{height:100%;}
+		body{
+			margin:0;
+			background:var(--bg);
+			color:var(--accent);
+			font-family:var(--font-display);
+			display:flex;
+			align-items:center;
+			justify-content:center;
+		}
+		p{
+			margin:0;
+			font-size:clamp(96px,26vw,320px);
+			font-weight:700;
+			line-height:1;
+			letter-spacing:.02em;
+			opacity:0;
+			transition:opacity .45s ease;
+		}
+		body.in p{opacity:1;}
+		@media (prefers-reduced-motion:reduce){
+			p{transition:none;opacity:1;}
+		}
+	</style>
+</head>
+<body>
+	<p>404</p>
+
+	<script>
+		/* Where "home" is. The site is served from the root of its domain, so "/".
+		   If it is ever hosted in a repository subfolder instead (e.g. GitHub Pages
+		   at username.github.io/website/), change this to "/website/". */
+		var HOME = "/";
+		var DELAY = 2500;   // ms the 404 is shown before leaving
+
+		requestAnimationFrame(function () { document.body.classList.add("in"); });
+
+		// replace() rather than assign() so Back returns to wherever the visitor
+		// came from, instead of bouncing them onto this page again.
+		setTimeout(function () { window.location.replace(HOME); }, DELAY);
+	</script>
+</body>
+</html>

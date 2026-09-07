@@ -1,3 +1,4 @@
 .github/
 .surgeignore
 *.md
+!content/*.md
