@@ -111,7 +111,7 @@ clear of the purple header strip automatically.
     </div>
 ```
 
-## competition-info.html   (background: penrose-triangle.jpg)
+## competition.html   (background: penrose-triangle.jpg)
 
 ```html
 <div class="banner-wrap">

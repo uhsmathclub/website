@@ -28,7 +28,7 @@
       { label: "Constitution", href: "constitution" },
       { label: "Minutes", href: "minutes" }
     ] },
-    { label: "Competitions", href: "competition-info" },
+    { label: "Competitions", href: "competition" },
     { label: "Awards", href: "awards" },
     { label: "Resources", href: "resources" },
     { label: "Media", href: "media", children: [

@@ -438,7 +438,7 @@ Rules of thumb:
 ├── board.html              Board  (text comes from content/board.md)
 ├── constitution.html       Constitution (embedded Google Doc)
 ├── minutes.html            Minutes (list comes from content/minutes.md)
-├── competition-info.html   Competitions (info + the competitions table)
+├── competition.html        Competitions (info + the competitions table)
 ├── awards.html             Awards (text comes from content/awards.md)
 ├── resources.html          Resources (embedded Google Doc)
 ├── media.html              Media landing page (links to Gallery & Lectures)

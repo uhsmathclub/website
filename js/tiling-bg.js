@@ -22,7 +22,16 @@
   if (typeof HatGen === "undefined") return;
 
   const CUTOFF = 68;      // header cutoff height in the viewport (≈ --hdr-h)
-  const OVER   = 260;     // extra canvas height so a big hat straddling the cutoff
+  const OVER   = 260;
+  // --- jagged header band: retracts as you scroll (non-banner pages) ---
+  // At the top of the page the fringe of hats below the nav is full height; it
+  // is decorative there. While you are reading it is just noise, so it pulls
+  // back to a slim band once you have scrolled past SHRINK_OVER.
+  const SHRINK_OVER = 240;   // px of scroll over which it retracts
+  const CUT_MIN     = 44;    // hat threshold once retracted (from CUTOFF)
+  const SOLID_MAX   = 70;    // solid strip then: just past the 68px nav
+  const BAND_TOP    = 150;   // painted ceiling at scroll 0
+  const BAND_MIN    = 70;    // painted ceiling once retracted     // extra canvas height so a big hat straddling the cutoff
                           // shows its full jagged lower outline (never clipped flat)
   const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -166,17 +175,29 @@
     }
 
     // JAGGED: solid top strip, then whole hats poking above the cutoff.
-    hctx.fillRect(0, 0, W, Math.max(0, CUTOFF - 22));
+    // Everything below is interpolated by p so the band retracts on scroll:
+    // p = 0 at the top of the page, 1 once scrolled past SHRINK_OVER.
+    const p     = Math.min(1, Math.max(0, scrollY / SHRINK_OVER));
+    const cut   = CUTOFF     + (CUT_MIN    - CUTOFF)       * p;   // 68  -> 44
+    // solid ramps at twice the rate: the strip behind the nav text must never
+    // thin out mid-transition, even as fewer hats are drawn under it.
+    const solid = (CUTOFF-22)+ (SOLID_MAX  - (CUTOFF-22))  * Math.min(1, p*2);
+    const band  = BAND_TOP   + (BAND_MIN   - BAND_TOP)     * p;   // 150 -> 76
+
+    hctx.save();
+    hctx.beginPath(); hctx.rect(0, 0, W, band); hctx.clip();
+    hctx.fillRect(0, 0, W, Math.max(0, solid));
     hctx.lineWidth=1; hctx.strokeStyle=COL.act;   // merge borders: stroke==fill → no seams
     for(let i=0;i<tiles.length;i++){
       const t=tiles[i]; if(t.removed) continue;
       const vyTop=t.minY-scrollY;
-      if(vyTop>CUTOFF) continue;         // entirely below the cutoff → not header
+      if(vyTop>cut) continue;            // entirely below the cutoff → not header
       const v=t.dv;
       hctx.beginPath(); hctx.moveTo(v[0], v[1]-scrollY);
       for(let j=2;j<v.length;j+=2) hctx.lineTo(v[j], v[j+1]-scrollY);
       hctx.closePath(); hctx.fill(); hctx.stroke();
     }
+    hctx.restore();
   }
 
   // Is a tile currently in the header band? (so clicking it does nothing)
