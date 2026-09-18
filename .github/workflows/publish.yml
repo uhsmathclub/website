@@ -7,6 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npx surge . uhsmathclub.surge.sh
+      - run: npx surge . https://uhsmathclub.org
         env:
           SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
