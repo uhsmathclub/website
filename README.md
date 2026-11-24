@@ -272,13 +272,11 @@ hosted elsewhere:
 - **Resources** (`resources.html`) — embeds a published Google Doc.
 - **Home** (`index.html`) — embeds the Discord widget and the Tally email
   sign-up form.
-- **Lecture Archive** also embeds a Google Drive folder near the top.
 
 To change what these show, you update the document **in Google Docs / Drive /
 Tally**, not on the website — the website just displays whatever those links
-point to. If you ever need to point at a *different* Google Doc, open the
-matching `.html` file (or, for the Lecture Archive folder, `content/lecture-archive.md`),
-find the `<iframe ... src="...">` line, and replace the link with the new
+point to. If you ever need to point at a *different* Google file, open the
+matching `.html` file, find `<iframe ...>`, and replace the link with the new
 document's **"Publish to the web" / "embed"** link. If you're not comfortable
 doing that, ask someone technical — it's a one-line change but it has to be the
 right kind of link.
