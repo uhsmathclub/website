@@ -1,6 +1,6 @@
-# Lecture Archive
+# Lectures
 
-We run lectures weekly on Monday and Friday. Some of the presentations and materials from past lectures are archived here.
+We run lectures and activities weekly on Monday and Friday. Some of the presentations and materials from past meetings are archived here.
 
 ## 2025–26 Lectures
 
