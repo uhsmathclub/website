@@ -1,9 +1,6 @@
 # Lecture Archive
 
-Browse our lecture slides in the embedded Google Drive folder below, or use the year-by-year links that follow.
-
-<!-- EMBED: This is the live Google Drive folder of lecture files. To change which folder is shown, replace the id= value in the embed URL on the Lecture Archive page (see README). -->
-<iframe src="https://drive.google.com/embeddedfolderview?id=1vxHRW3wQQDFugDJOEC4I5n7NNeRUGrAv" width="1200" height="1240" frameborder="0" allowfullscreen="true" style="max-width:100%;"></iframe>
+We run lectures weekly on Monday and Friday. Some of the presentations and materials from past lectures are archived here.
 
 ## 2025–26 Lectures
 
